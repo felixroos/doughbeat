@@ -18,11 +18,11 @@ Example:
 
 ```js
 function dsp(t) {
-  return (110 * t) % 1;
+  return (110 * t) % 1 - 0.5;
 }
 ```
 
-This is a simple sawtooth wave... The returned numbers will rise from 0 to 1 at a frequency of 110Hz. 
+This is a simple sawtooth wave... The returned numbers will rise from -0.5 to 0.5 at a frequency of 110Hz. 
 This is just a very basic example. 
 You can actually write full music pieces with this abstraction.
 
