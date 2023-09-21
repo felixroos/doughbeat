@@ -96,7 +96,7 @@ registerProcessor('${name}', MyProcessor);
       const initialCode =
         urlCode ||
         `function dsp(t) {
-  return 110*t%1
+  return (110*t%1)/10
 }`;
       input.value = initialCode;
 
