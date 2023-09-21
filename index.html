@@ -14,6 +14,24 @@
         padding: 10px;
       "
     ></textarea>
+    <button
+      style="position: fixed; right: 0; bottom: 0; font-size: 30px"
+      id="playButton"
+    >
+      play
+    </button>
+    <button
+      style="
+        display: none;
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        font-size: 30px;
+      "
+      id="stopButton"
+    >
+      stop
+    </button>
     <script>
       // audio init
       console.log(
@@ -89,6 +107,8 @@ registerProcessor('${name}', MyProcessor);
 
       // ui
       const input = document.getElementById("code");
+      const playButton = document.getElementById("playButton");
+      const stopButton = document.getElementById("stopButton");
       let urlCode = window.location.hash.slice(1);
       if (urlCode) {
         urlCode = atob(urlCode);
@@ -107,6 +127,17 @@ registerProcessor('${name}', MyProcessor);
         } else if (e.ctrlKey && e.key === ".") {
           stop();
         }
+      });
+
+      playButton.addEventListener("click", () => {
+        update(input.value);
+        stopButton.style.display = "block";
+        playButton.style.display = "none";
+      });
+      stopButton.addEventListener("click", () => {
+        stop();
+        stopButton.style.display = "none";
+        playButton.style.display = "block";
       });
     </script>
   </body>
