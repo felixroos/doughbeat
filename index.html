@@ -97,7 +97,12 @@ registerProcessor('${name}', MyProcessor);
         urlCode = atob(urlCode);
         console.log("loaded code from url!");
       }
-      const initialCode = urlCode || `t/44100*220%1/2`;
+      const initialCode =
+        urlCode ||
+        `{
+let seq = (items, dur) => items[Math.floor(t/dur/44100)%items.length]
+return seq([220,330],4)*seq([1,1.5,2,2.5,3],seq([.1,.2],1))*t/2/44100%1/3
+}`;
       input.value = initialCode;
 
       input.addEventListener("keydown", (e) => {
