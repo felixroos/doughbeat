@@ -93,6 +93,8 @@ registerProcessor('${name}', MyProcessor);
       const stop = async () => {
         worklet?.stop();
         worklet?.node?.disconnect();
+        stopButton.style.display = "none";
+        playButton.style.display = "block";
       };
 
       const update = async (code) => {
@@ -103,6 +105,8 @@ registerProcessor('${name}', MyProcessor);
         worklet = await getSimpleDynamicWorklet(ac, code, hz);
         worklet.node.connect(ac.destination);
         window.location.hash = "#" + btoa(code);
+        stopButton.style.display = "block";
+        playButton.style.display = "none";
       };
 
       // ui
@@ -129,16 +133,8 @@ registerProcessor('${name}', MyProcessor);
         }
       });
 
-      playButton.addEventListener("click", () => {
-        update(input.value);
-        stopButton.style.display = "block";
-        playButton.style.display = "none";
-      });
-      stopButton.addEventListener("click", () => {
-        stop();
-        stopButton.style.display = "none";
-        playButton.style.display = "block";
-      });
+      playButton.addEventListener("click", () => update(input.value));
+      stopButton.addEventListener("click", () => stop());
     </script>
   </body>
 </html>
