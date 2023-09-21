@@ -30,15 +30,12 @@ There are no further instructions. Read https://github.com/felixroos/doughbeat t
         document.removeEventListener("click", initAudio);
       });
 
-      async function getSimpleDynamicWorklet(
-        ac,
-        expression,
-        hz = ac.sampleRate
-      ) {
+      async function getSimpleDynamicWorklet(ac, code, hz = ac.sampleRate) {
         const name = `simple-custom-${Date.now()}`;
         let srcSampleRate = hz || ac.sampleRate;
-        let sampleRatio = srcSampleRate / ac.sampleRate;
-        const workletCode = `class MyProcessor extends AudioWorkletProcessor {
+        // let sampleRatio = srcSampleRate / ac.sampleRate;
+        const workletCode = `${code}
+        class MyProcessor extends AudioWorkletProcessor {
   constructor() {
     super();
     this.t = 0;
@@ -52,7 +49,7 @@ There are no further instructions. Read https://github.com/felixroos/doughbeat t
   process(inputs, outputs, parameters) {
     const output = outputs[0];
     for (let i = 0; i < output[0].length; i++) {
-      const out = ((t) => ${expression})(this.t * ${sampleRatio});
+      const out = dsp(this.t / ${ac.sampleRate});
       output.forEach((channel) => {
         channel[i] = out;
       });
@@ -98,9 +95,8 @@ registerProcessor('${name}', MyProcessor);
       }
       const initialCode =
         urlCode ||
-        `{
-let seq = (items, dur) => items[Math.floor(t/dur/44100)%items.length]
-return seq([220,330],4)*seq([1,1.5,2,2.5,3],seq([.1,.2],1))*t/2/44100%1/3
+        `function dsp(t) {
+  return 110*t%1
 }`;
       input.value = initialCode;
 
