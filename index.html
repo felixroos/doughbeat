@@ -126,9 +126,9 @@ registerProcessor('${name}', MyProcessor);
       input.value = initialCode;
 
       input.addEventListener("keydown", (e) => {
-        if (e.ctrlKey && e.key === "Enter") {
+        if ((e.ctrlKey || e.altKey) && e.key === "Enter") {
           update(input.value);
-        } else if (e.ctrlKey && e.key === ".") {
+        } else if ((e.ctrlKey || e.altKey) && e.code === "Period") {
           stop();
         }
       });
